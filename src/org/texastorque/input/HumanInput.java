@@ -18,6 +18,8 @@ public class HumanInput extends Input {
 		DB_SpeedLeft = -driver.getLeftYAxis() + driver.getRightXAxis();
 		DB_SpeedRight = -driver.getLeftYAxis() - driver.getRightXAxis();
 		
+//		TODO: methodology for setting flywheel speeds
+		
 	}
 	
 	public static HumanInput getInstance() {

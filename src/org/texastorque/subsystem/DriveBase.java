@@ -1,7 +1,13 @@
 package org.texastorque.subsystem;
 
+import org.texastorque.constants.Constants;
+import org.texastorque.feedback.Feedback;
 import org.texastorque.output.RobotOutput;
+import org.texastorque.torquelib.controlLoop.TorquePV;
+import org.texastorque.torquelib.controlLoop.TorqueTMP;
 import org.texastorque.torquelib.util.TorqueMathUtil;
+
+import edu.wpi.first.wpilibj.Timer;
 
 public class DriveBase extends Subsystem {
 
@@ -15,15 +21,67 @@ public class DriveBase extends Subsystem {
 	private double leftSpeed;
 	private double rightSpeed;
 	
+//	DEFINE: TMP variables
+	
+	private double leftPosition;
+	private double rightPosition;
+	
+	private double leftVelocity;
+	private double rightVelocity;
+	
+	private double leftAcceleration;
+	private double rightAcceleration;
+	
+	private double targetPosition;
+	private double targetVelocity;
+	private double targetAcceleration;
+	
+	private double setpoint;
+	private double previousSetpoint;
+	
+	private double previousTime;
+	
+	private TorqueTMP driveProfile;
+	private TorquePV rightPV;
+	private TorquePV leftPV;
+	
 	@Override
 	public void initSystem() {
-		// TODO: implement initialization code
+		driveProfile = new TorqueTMP(Constants.DB_TMPVELOCITY.getDouble(), Constants.DB_TMPACCELERATION.getDouble());
 	}
 
 	@Override
 	public void runSystem() {
-		leftSpeed = input.getDB_SpeedLeft();
-		rightSpeed = input.getDB_SpeedRight();
+		leftPosition = Feedback.getInstance().getDB_leftPosition();
+		rightPosition = Feedback.getInstance().getDB_rightPosition();
+
+		leftVelocity = Feedback.getInstance().getDB_leftVelocity();
+		rightVelocity = Feedback.getInstance().getDB_rightVelocity();
+
+		leftAcceleration = Feedback.getInstance().getDB_leftAcceleration();
+		rightAcceleration = Feedback.getInstance().getDB_rightAcceleration();
+
+		if(Constants.DB_DOTMP.getBoolean()) {
+			setpoint = input.getDB_Setpoint();
+			if(setpoint != previousSetpoint) {
+				previousSetpoint = setpoint;
+				Feedback.getInstance().resetDriveEncoders();
+				driveProfile.generateTrapezoid(setpoint, 0, 0);
+			}
+			double dt = Timer.getFPGATimestamp() - previousTime;
+			
+			targetPosition = driveProfile.getCurrentPosition();
+			targetVelocity = driveProfile.getCurrentVelocity();
+			targetAcceleration = driveProfile.getCurrentAcceleration();
+			
+			driveProfile.calculateNextSituation(dt);
+
+			leftSpeed = leftPV.calculate(driveProfile, leftPosition, leftVelocity);
+			rightSpeed = rightPV.calculate(driveProfile, rightPosition, rightVelocity);
+		} else {
+			leftSpeed = input.getDB_SpeedLeft();
+			rightSpeed = input.getDB_SpeedRight();
+		}
 	}
 
 	@Override

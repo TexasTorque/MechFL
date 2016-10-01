@@ -6,6 +6,11 @@ public abstract class Input {
 	
 	protected double DB_SpeedLeft;
 	protected double DB_SpeedRight;
+	protected double DB_Setpoint;
+	
+	public double getDB_Setpoint() {
+		return DB_Setpoint;
+	}
 	
 	public double getDB_SpeedLeft() {
 		return DB_SpeedLeft;

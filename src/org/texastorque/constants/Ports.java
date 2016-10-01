@@ -9,7 +9,7 @@ public class Ports {
 //	DEFINE: define all DriveBase variables with prefix 'DB'
 	
 	public static final int DB_LEFTENCODER_A = -1;
-	public static final int DB_LEFTENCODER_A_B = -1;
+	public static final int DB_LEFTENCODER_B = -1;
 	public static final int DB_RIGHTENCODER_A = -1;
 	public static final int DB_RIGHTENCODER_B = -1;
 	

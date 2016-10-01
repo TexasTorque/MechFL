@@ -1,5 +1,6 @@
 package org.texastorque.subsystem;
 
+import org.texastorque.output.RobotOutput;
 import org.texastorque.torquelib.util.TorqueMathUtil;
 
 public class DriveBase extends Subsystem {
@@ -29,6 +30,8 @@ public class DriveBase extends Subsystem {
 	public void setOutput() {
 		leftSpeed = TorqueMathUtil.constrain(leftSpeed , 1.0);
 		rightSpeed = TorqueMathUtil.constrain(rightSpeed , 1.0);
+		
+		RobotOutput.getInstance().setDriveSpeeds(leftSpeed, rightSpeed);
 	}
 	
 	public void smartDashboard() {

@@ -23,6 +23,8 @@ public class FlyWheel extends Subsystem {
 	private double rpmsLeft;
 
 	private double targetRPMS;
+	
+	private final double FW_SHIFTBY = 100;
 
 	@Override
 	public void initSystem() {
@@ -54,6 +56,15 @@ public class FlyWheel extends Subsystem {
 		
 		SmartDashboard.putNumber("FW_RPMSLEFT", rpmsLeft);
 		SmartDashboard.putNumber("FW_RPMSRIGHT", rpmsRight);
+	}
+	
+	public void upshift() {
+		targetRPMS += FW_SHIFTBY;
+	}
+	
+	public void downshift() {
+		if(targetRPMS >= 0 && targetRPMS - 100 >= 0)
+			targetRPMS -= FW_SHIFTBY;
 	}
 	
 	public static FlyWheel getInstance() {

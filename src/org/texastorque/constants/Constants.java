@@ -9,6 +9,6 @@ public class Constants {
 	public static final Constant DB_TMPVELOCITY = new Constant("DB_TMPVELOCITY", 0.0);
 	public static final Constant DB_TMPACCELERATION = new Constant("DB_TMPACCELERATION", 0.0);
 	
-	public static final Constant DB_DOTMP = new Constant("DB_DOTMP", 1.0);
+	public static final Constant DB_DOTMP = new Constant("DB_DOTMP", 0.0);
 	
 }

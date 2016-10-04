@@ -53,5 +53,8 @@ public class Robot extends TorqueIterative{
 	
 	@Override
 	public void alwaysContinuous() {
+		for(Subsystem system : systems) {
+			system.smartDashboard();
+		}
 	}
 }

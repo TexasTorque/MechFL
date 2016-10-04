@@ -8,6 +8,7 @@ import org.texastorque.torquelib.controlLoop.TorqueTMP;
 import org.texastorque.torquelib.util.TorqueMathUtil;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveBase extends Subsystem {
 
@@ -100,6 +101,20 @@ public class DriveBase extends Subsystem {
 	}
 	
 	public void smartDashboard() {
+		SmartDashboard.putNumber("DB_MOTOR_LEFTSPEED", leftSpeed);
+		SmartDashboard.putNumber("DB_MOTOR_RIGHTSPEED", rightSpeed);
+
+		SmartDashboard.putNumber("DB_TMP_LEFTPOSITION", leftPosition);
+		SmartDashboard.putNumber("DB_TMP_RIGHTPOSITION", rightPosition);
+
+		SmartDashboard.putNumber("DB_TMP_LEFTVELOCITY", leftVelocity);
+		SmartDashboard.putNumber("DB_TMP_RIGHTVELOCITY", rightVelocity);
+		
+		SmartDashboard.putNumber("DB_TMP_LEFTACCELERATION", leftAcceleration);
+		SmartDashboard.putNumber("DB_TMP_RIGHTACCELERATION", rightAcceleration);
+		
+		SmartDashboard.putNumber("DB_TMP_SETPOINT", setpoint);
+		SmartDashboard.putNumber("DB_TMP_PREVIOUSSETPOINT", previousSetpoint);
 	}
 
 	public static DriveBase getInstance() {

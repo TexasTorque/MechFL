@@ -2,7 +2,9 @@ package org.texastorque;
 
 import java.util.ArrayList;
 
+import org.texastorque.input.HumanInput;
 import org.texastorque.subsystem.DriveBase;
+import org.texastorque.subsystem.FlyWheel;
 import org.texastorque.subsystem.Subsystem;
 import org.texastorque.torquelib.base.TorqueIterative;
 
@@ -11,6 +13,7 @@ public class Robot extends TorqueIterative{
 	private ArrayList<Subsystem> systems = new ArrayList<>();
 	{
 		systems.add(DriveBase.getInstance());
+		systems.add(FlyWheel.getInstance());
 	}
 	
 	@Override
@@ -27,6 +30,7 @@ public class Robot extends TorqueIterative{
 
 	@Override
 	public void teleopContinuous() {
+		HumanInput.getInstance().update();
 		for(Subsystem system : systems) {
 			try {
 				system.teleopContinuous();

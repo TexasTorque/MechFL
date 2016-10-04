@@ -52,6 +52,9 @@ public class DriveBase extends Subsystem {
 
 	@Override
 	public void runSystem() {
+		
+//		update the values of both sides of drive train on the robot.
+//		by doing so, we are prepared in case of needing to update the TMP profile
 		leftPosition = Feedback.getInstance().getDB_leftPosition();
 		rightPosition = Feedback.getInstance().getDB_rightPosition();
 
@@ -63,17 +66,21 @@ public class DriveBase extends Subsystem {
 
 		if(Constants.DB_DOTMP.getBoolean()) {
 			setpoint = input.getDB_Setpoint();
+
+//			if the setpoint has changed, we need to start a new TMP to calculate the motion path.
 			if(setpoint != previousSetpoint) {
 				previousSetpoint = setpoint;
 				Feedback.getInstance().resetDriveEncoders();
 				driveProfile.generateTrapezoid(setpoint, 0, 0);
 			}
+//			calculate the new deltaTime (change in time) since the previous TMP calculation
 			double dt = Timer.getFPGATimestamp() - previousTime;
 			
 			targetPosition = driveProfile.getCurrentPosition();
 			targetVelocity = driveProfile.getCurrentVelocity();
 			targetAcceleration = driveProfile.getCurrentAcceleration();
 			
+//			
 			driveProfile.calculateNextSituation(dt);
 
 			leftSpeed = leftPV.calculate(driveProfile, leftPosition, leftVelocity);
@@ -97,6 +104,10 @@ public class DriveBase extends Subsystem {
 
 	public static DriveBase getInstance() {
 		return instance == null ? instance = new DriveBase() : instance;
+	}
+	
+	public void teleopPeriodic() {
+		runSystem();
 	}
 
 }

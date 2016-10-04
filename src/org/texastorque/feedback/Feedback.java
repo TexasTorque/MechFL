@@ -5,6 +5,12 @@ import org.texastorque.torquelib.component.TorqueEncoder;
 
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 
+/**
+ * Defines feedback for sensors on the robot.  Used to get values
+ * from sensors for usage in various subsystems.
+ * @author Glen Lauritsen
+ *
+ */
 public class Feedback {
 
 	private static Feedback instance;
@@ -12,6 +18,7 @@ public class Feedback {
 //	DEFINE: conversions
 	
 	private final double CONVERSION_DRIVEBASE = 0.0;
+	private final double CONVERSION_FLYWHEEL = 0.0;
 	
 //	DEFINE: drivebase variables
 	
@@ -23,15 +30,28 @@ public class Feedback {
 	private double DB_rightVelocity;
 	private double DB_rightAcceleration;
 	
+//	DEFINE: flywheel variables
+	
+	private double FW_rightRPM;
+	private double FW_leftRPM;
+	
 //	DEFINE: encoders
 	
 //	DEFINE: DriveBase encoders
 	private TorqueEncoder DB_leftEncoder;
 	private TorqueEncoder DB_rightEncoder;
 	
+//	DEFINE: FlyWheel encoders
+	private TorqueEncoder FW_leftEncoder;
+	private TorqueEncoder FW_rightEncoder;
+	
 	public void init() {
+		
 		DB_leftEncoder = new TorqueEncoder(Ports.DB_LEFTENCODER_A, Ports.DB_LEFTENCODER_B, false, EncodingType.k4X);
 		DB_rightEncoder = new TorqueEncoder(Ports.DB_RIGHTENCODER_B, Ports.DB_LEFTENCODER_B, false, EncodingType.k4X);
+		
+		FW_leftEncoder = new TorqueEncoder(Ports.FW_LEFTENCODER_A, Ports.FW_LEFTENCODER_B, false, EncodingType.k4X);
+		FW_rightEncoder = new TorqueEncoder(Ports.FW_RIGHTENCODER_A, Ports.FW_RIGHTENCODER_B, false, EncodingType.k4X);
 	}
 	
 	public void update() {
@@ -42,6 +62,9 @@ public class Feedback {
 		DB_rightPosition = DB_rightEncoder.get() * CONVERSION_DRIVEBASE;
 		DB_rightVelocity = DB_rightEncoder.getRate() * CONVERSION_DRIVEBASE;
 		DB_rightAcceleration = DB_rightEncoder.getAcceleration() * CONVERSION_DRIVEBASE;
+		
+		FW_leftRPM = FW_leftEncoder.get() * CONVERSION_FLYWHEEL;
+		FW_rightRPM = FW_rightEncoder.get() * CONVERSION_FLYWHEEL;
 	}
 	
 	public double getDB_leftPosition() {
@@ -66,6 +89,14 @@ public class Feedback {
 	
 	public double getDB_rightAcceleration() {
 		return DB_rightAcceleration;
+	}
+	
+	public double getFW_rightRPM() {
+		return FW_rightRPM;
+	}
+	
+	public double getFW_leftRPM() {
+		return FW_leftRPM;
 	}
 	
 	public void resetDriveEncoders() {

@@ -29,23 +29,31 @@ public class RobotOutput {
 	private TorqueMotor FW_rightBack;
 	private TorqueMotor FW_rightFore;
 
+	private TorqueMotor KR_sole;
+	
+	public RobotOutput() {
+		init();
+	}
+	
 	/**
 	 * Defines all motors that will be on the robot
 	 * @author Glen Lauritsen
 	 */
-	public RobotOutput() {
-		boolean reversed = true;
+	public void init() {
+		System.out.println("Initializing RobotOutput...");
+		boolean typical = false;
 	
-		DB_leftBack = new TorqueMotor(new VictorSP(Ports.DB_LEFTBACK), !reversed);
-		DB_leftFore = new TorqueMotor(new VictorSP(Ports.DB_LEFTFORE), !reversed);
-		DB_rightBack = new TorqueMotor(new VictorSP(Ports.DB_RIGHTBACK), reversed);
-		DB_rightFore = new TorqueMotor(new VictorSP(Ports.DB_RIGHTFORE), reversed);
+		DB_leftBack = new TorqueMotor(new VictorSP(Ports.DB_LEFTBACK), !typical);
+		DB_leftFore = new TorqueMotor(new VictorSP(Ports.DB_LEFTFORE), !typical);
+		DB_rightBack = new TorqueMotor(new VictorSP(Ports.DB_RIGHTBACK), typical);
+		DB_rightFore = new TorqueMotor(new VictorSP(Ports.DB_RIGHTFORE), typical);
 		
-		FW_leftBack = new TorqueMotor(new VictorSP(Ports.FW_LEFTBACK), reversed);
-		FW_leftFore = new TorqueMotor(new VictorSP(Ports.FW_LEFTFORE), reversed);
-		FW_rightBack = new TorqueMotor(new VictorSP(Ports.FW_RIGHTBACK), reversed);
-		FW_rightFore = new TorqueMotor(new VictorSP(Ports.FW_RIGHTFORE), reversed);
+		FW_leftBack = new TorqueMotor(new VictorSP(Ports.FW_LEFTBACK), typical);
+		FW_leftFore = new TorqueMotor(new VictorSP(Ports.FW_LEFTFORE), typical);
+		FW_rightBack = new TorqueMotor(new VictorSP(Ports.FW_RIGHTBACK), !typical);
+		FW_rightFore = new TorqueMotor(new VictorSP(Ports.FW_RIGHTFORE), !typical);
 		
+		KR_sole = new TorqueMotor(new VictorSP(Ports.KR_SOLE), typical);
 	}
 	
 	public void setDriveSpeeds(double left, double right) {
@@ -62,6 +70,13 @@ public class RobotOutput {
 
 		FW_rightBack.set(rightSpeed);
 		FW_rightFore.set(rightSpeed);
+	}
+	
+	public void setKicker(boolean run) {
+		if(run)
+			KR_sole.set(-1.0);
+		else
+			KR_sole.set(0.0);
 	}
 	
 	public void setOutputs() {

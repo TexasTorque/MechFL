@@ -86,10 +86,13 @@ public class DriveBase extends Subsystem {
 
 			leftSpeed = leftPV.calculate(driveProfile, leftPosition, leftVelocity);
 			rightSpeed = rightPV.calculate(driveProfile, rightPosition, rightVelocity);
+			
+			previousTime = Timer.getFPGATimestamp();
 		} else {
 			leftSpeed = input.getDB_SpeedLeft();
 			rightSpeed = input.getDB_SpeedRight();
 		}
+		setOutput();
 	}
 
 	@Override

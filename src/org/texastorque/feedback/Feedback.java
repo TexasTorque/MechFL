@@ -4,6 +4,7 @@ import org.texastorque.constants.Ports;
 import org.texastorque.torquelib.component.TorqueEncoder;
 
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Defines feedback for sensors on the robot.  Used to get values
@@ -17,8 +18,8 @@ public class Feedback {
 	
 //	DEFINE: conversions
 	
-	private final double CONVERSION_DRIVEBASE = 0.0;
-	private final double CONVERSION_FLYWHEEL = 0.0;
+	private final double CONVERSION_DRIVEBASE = 25.13;
+	private final double CONVERSION_FLYWHEEL = 0.00071428571 * 60;
 	
 //	DEFINE: drivebase variables
 	
@@ -45,26 +46,36 @@ public class Feedback {
 	private TorqueEncoder FW_leftEncoder;
 	private TorqueEncoder FW_rightEncoder;
 	
+	public Feedback() {
+		init();
+	}
+	
 	public void init() {
-		
-		DB_leftEncoder = new TorqueEncoder(Ports.DB_LEFTENCODER_A, Ports.DB_LEFTENCODER_B, false, EncodingType.k4X);
-		DB_rightEncoder = new TorqueEncoder(Ports.DB_RIGHTENCODER_B, Ports.DB_LEFTENCODER_B, false, EncodingType.k4X);
+		System.out.println("Initializing Feedback...");
+//		DEFINE: removed for temporary	
+//		DB_leftEncoder = new TorqueEncoder(Ports.DB_LEFTENCODER_A, Ports.DB_LEFTENCODER_B, false, EncodingType.k4X);
+//		DB_rightEncoder = new TorqueEncoder(Ports.DB_RIGHTENCODER_B, Ports.DB_LEFTENCODER_B, false, EncodingType.k4X);
 		
 		FW_leftEncoder = new TorqueEncoder(Ports.FW_LEFTENCODER_A, Ports.FW_LEFTENCODER_B, false, EncodingType.k4X);
 		FW_rightEncoder = new TorqueEncoder(Ports.FW_RIGHTENCODER_A, Ports.FW_RIGHTENCODER_B, false, EncodingType.k4X);
 	}
 	
 	public void update() {
-		DB_leftPosition = DB_leftEncoder.get() * CONVERSION_DRIVEBASE;
-		DB_leftVelocity = DB_leftEncoder.getRate() * CONVERSION_DRIVEBASE;
-		DB_leftAcceleration = DB_leftEncoder.getAcceleration() * CONVERSION_DRIVEBASE;
-
-		DB_rightPosition = DB_rightEncoder.get() * CONVERSION_DRIVEBASE;
-		DB_rightVelocity = DB_rightEncoder.getRate() * CONVERSION_DRIVEBASE;
-		DB_rightAcceleration = DB_rightEncoder.getAcceleration() * CONVERSION_DRIVEBASE;
+//		DB_leftPosition = DB_leftEncoder.get() * CONVERSION_DRIVEBASE;
+//		DB_leftVelocity = DB_leftEncoder.getRate() * CONVERSION_DRIVEBASE;
+//		DB_leftAcceleration = DB_leftEncoder.getAcceleration() * CONVERSION_DRIVEBASE;
+//
+//		DB_rightPosition = DB_rightEncoder.get() * CONVERSION_DRIVEBASE;
+//		DB_rightVelocity = DB_rightEncoder.getRate() * CONVERSION_DRIVEBASE;
+//		DB_rightAcceleration = DB_rightEncoder.getAcceleration() * CONVERSION_DRIVEBASE;
 		
-		FW_leftRPM = FW_leftEncoder.get() * CONVERSION_FLYWHEEL;
-		FW_rightRPM = FW_rightEncoder.get() * CONVERSION_FLYWHEEL;
+		FW_leftRPM = FW_leftEncoder.getRate() * CONVERSION_FLYWHEEL;
+		FW_rightRPM = FW_rightEncoder.getRate() * CONVERSION_FLYWHEEL;
+	}
+	
+	public void smartDashboard() {
+		SmartDashboard.putNumber("FW_LEFTENCODER", FW_leftEncoder.get());
+		SmartDashboard.putNumber("FW_RIGHTENCODER", FW_rightEncoder.get());
 	}
 	
 	public double getDB_leftPosition() {
